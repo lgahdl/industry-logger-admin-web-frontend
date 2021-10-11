@@ -18,6 +18,7 @@ import '@/libs/toastification'
 import '@/libs/sweet-alerts'
 import '@/libs/vue-select'
 import '@/libs/tour'
+import '@/views/components/make-global'
 
 // BSV Plugin Registration
 Vue.use(ToastPlugin)

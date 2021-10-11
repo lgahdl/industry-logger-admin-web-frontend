@@ -3,23 +3,18 @@ import httpClient from '@/services/http-client'
 const baseUrl = 'log'
 
 export default class LogService {
-  static async findAll(page, limit, search) {
-    const { data } = await httpClient.get(baseUrl, { params: { page, limit, search } })
+  static async findAll(macAddress, initialDate, finalDate) {
+    const { data } = await httpClient.get([baseUrl, macAddress].join('/'), { params: { initialDate, finalDate } })
     return data
   }
 
-  static async create(content) {
-    const { data } = await httpClient.post(baseUrl, content)
+  static async findLast(macAddress) {
+    const { data } = await httpClient.get([baseUrl, macAddress, 'last'].join('/'))
     return data
   }
 
-  static async update(id, content) {
-    const { data } = await httpClient.patch([baseUrl, id].join('/'), content)
-    return data
-  }
-
-  static async softDelete(id) {
-    const { data } = await httpClient.delete([baseUrl, id].join('/'))
+  static async delete(finalDate) {
+    const { data } = await httpClient.delete(baseUrl, { params: { finalDate } })
     return data
   }
 }
