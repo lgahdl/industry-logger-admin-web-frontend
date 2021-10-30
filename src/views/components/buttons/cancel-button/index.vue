@@ -3,14 +3,14 @@
     v-ripple.400="'rgba(186, 191, 199, 0.15)'"
     :type="type"
     :variant="variant"
-    class="mr-2"
+    style="border-radius: 4px"
     @click="$emit('click')"
   >
     <feather-icon
       icon="XIcon"
       class="mr-1"
     />
-    <b>{{ $t("#Button Cancel") }}</b>
+    <b>Cancelar</b>
   </b-button>
 </template>
 

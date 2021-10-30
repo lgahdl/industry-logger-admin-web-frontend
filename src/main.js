@@ -12,12 +12,16 @@ import './global-components'
 
 // 3rd party plugins
 import '@axios'
+import '@/libs/cleave'
+import '@/libs/bootstrap-vue'
 import '@/libs/portal-vue'
 import '@/libs/clipboard'
 import '@/libs/toastification'
+import '@/libs/ripple'
 import '@/libs/sweet-alerts'
-import '@/libs/vue-select'
 import '@/libs/tour'
+import '@/libs/vee-validate'
+import '@/libs/vue-select'
 import '@/views/components/make-global'
 
 // BSV Plugin Registration

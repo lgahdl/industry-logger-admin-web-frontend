@@ -4,14 +4,14 @@
     :variant="variant"
     :type="type"
     class="font-weight-bolder"
-    style="border-radius: 13px"
+    style="border-radius: 4px"
     @click="$emit('click')"
   >
     <feather-icon
       icon="SaveIcon"
       class="mr-1"
     />
-    <b>{{ $t("#Button Save") }}</b>
+    <b>Salvar</b>
   </b-button>
 </template>
 

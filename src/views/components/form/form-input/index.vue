@@ -11,6 +11,7 @@
       <b-form-input
         :id="id"
         v-model="fieldValue"
+        v-cleave="cleaveOptions"
         :disabled="disabled"
         class="b-form-input"
         :state="getValidationState(validationContext)"
@@ -68,6 +69,11 @@ export default {
       type: String,
       required: false,
       default: 'text',
+    },
+    cleaveOptions: {
+      type: undefined,
+      required: false,
+      default: null,
     },
   },
   data() {
