@@ -55,7 +55,7 @@
               :name="'cell('+header.name+')'"
               :item="item"
               :index="index"
-            >{{ at(item, [ header.name ])[0] }}
+            >{{ at(item, [header.name])[0] }}
             </slot>
           </td>
         </template>
@@ -66,9 +66,11 @@
 
 <script>
 import _ from 'lodash'
+import Draggable from 'vuedraggable'
 
 export default {
   name: 'SimpleTable',
+  components: { Draggable },
   props: {
     headers: {
       type: Array,

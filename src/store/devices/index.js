@@ -4,15 +4,22 @@ export default {
   namespaced: true,
   state: {
     devices: [],
+    device: null,
   },
   getters: {
     devices(state) {
       return state.devices
     },
+    device(state) {
+      return state.device
+    },
   },
   mutations: {
-    UPDATE_DEVICES(state, devices) {
+    SET_DEVICES(state, devices) {
       state.devices = devices
+    },
+    SET_DEVICE(state, device) {
+      state.device = device
     },
     SAVE_DEVICE(state, saved) {
       state.devices.push(saved)
@@ -30,8 +37,14 @@ export default {
     async findAll(ctx) {
       const { commit } = ctx
       const devices = await DeviceService.findAll()
-      commit('UPDATE_DEVICES', devices)
+      commit('SET_DEVICES', devices)
       return devices
+    },
+    async findById(ctx, id) {
+      const { commit } = ctx
+      const device = await DeviceService.findById(id)
+      commit('SET_DEVICE', device)
+      return device
     },
     async create(ctx, device) {
       const { commit } = ctx

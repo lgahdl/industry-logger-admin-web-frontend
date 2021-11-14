@@ -3,20 +3,27 @@
     <b-card no-body>
       <b-card-header>
         <h1
+          v-if="device"
           class="d-flex"
-        >Dispositivos
+        >Tabelas do dispositivo
         </h1>
       </b-card-header>
       <b-card-body>
 
-        <b-button
-          class="mb-1"
-          @click="createDevice"
+        <h2
+          v-if="device"
+          class="py-1"
         >
-          Adicionar Dispositivo
+          Dispositivo: {{ device.name }}
+        </h2>
+        <b-button
+          class="mb-1 py-1"
+          @click="createTable"
+        >
+          Adicionar Tabela
         </b-button>
         <b-table
-          :items="devices"
+          :items="tables"
           :fields="columns"
         >
           <template #cell(createdAt)="{item}">
@@ -31,19 +38,19 @@
                 class="icon-button mr-1"
                 icon="EditIcon"
                 size="18"
-                @click="editDevice(item)"
+                @click="editTable(item)"
               />
               <feather-icon
                 class="icon-button mr-1"
                 icon="ClipboardIcon"
                 size="18"
-                @click="editTables(item)"
+                @click="editTableFields(item)"
               />
               <feather-icon
                 class="icon-button"
                 icon="TrashIcon"
                 size="18"
-                @click="deleteDevice(item)"
+                @click="deleteTable(item)"
               />
             </div>
           </template>
@@ -54,7 +61,7 @@
       id="modal"
       ref="bModal"
       #default="{hide}"
-      title="Adicionar Dispositivo"
+      title="Adicionar Tabela de Valores"
       hide-footer
       size="lg"
     >
@@ -71,7 +78,7 @@
               md="6"
             >
               <form-input
-                v-model="selectedDevice.name"
+                v-model="selectedTable.name"
                 title="Nome"
                 name="Nome"
                 rules="required"
@@ -82,11 +89,9 @@
               md="6"
             >
               <form-input
-                v-model="selectedDevice.macAddress"
-                title="Mac Address"
-                name="Mac Address"
-                rules="required"
-                :cleave-options="cleaveOptions.macAddress"
+                v-model="selectedTable.description"
+                title="Descrição"
+                name="Descrição"
               />
             </b-col>
           </b-row>
@@ -109,22 +114,22 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
-import cleaveOptions from '@/libs/cleave/options'
+import { mapGetters } from 'vuex'
 import _ from 'lodash'
 
 export default {
-  name: 'Devices',
+  name: 'Tables',
   data() {
     return {
-      cleaveOptions,
+      deviceId: null,
+      selectedTable: {},
       columns: [
         { key: 'id', sortable: true, label: 'Id' },
         {
           key: 'name', sortable: true, label: 'Nome',
         },
         {
-          key: 'macAddress', sortable: false, label: 'Endereço MAC',
+          key: 'description', sortable: false, label: 'Descrição',
         },
         {
           key: 'createdAt', sortable: false, label: 'Criado em',
@@ -136,40 +141,43 @@ export default {
           key: 'actions', sortable: false, label: 'Ações',
         },
       ],
-      selectedDevice: {},
     }
   },
   computed: {
-    ...mapGetters({ devices: 'devices/devices' }),
+    ...mapGetters({ tables: 'tables/tables', device: 'devices/device' }),
   },
   beforeMount() {
-    this.findAll()
+    this.idDevice = this.$route.params.idDevice
+    this.$store.dispatch('tables/findByIdDevice', this.idDevice)
+    this.$store.dispatch('devices/findById', this.idDevice)
   },
   methods: {
-    ...mapActions({ findAll: 'devices/findAll' }),
     async onSubmit() {
-      if (this.selectedDevice.id) {
-        await this.$store.dispatch('devices/update', { device: this.selectedDevice, idDevice: this.selectedDevice.id })
+      if (this.selectedTable.id) {
+        await this.$store.dispatch('tables/update', {
+          table: this.selectedTable,
+          id: this.selectedTable.id,
+        })
       } else {
-        await this.$store.dispatch('devices/create', this.selectedDevice)
+        await this.$store.dispatch('tables/create', { ...this.selectedTable, idDevice: this.idDevice })
       }
       this.$refs.bModal.hide()
     },
-    createDevice() {
-      this.selectedDevice = {}
+    createTable() {
+      this.selectedTable = {}
       this.$refs.bModal.show()
     },
-    editDevice(device) {
-      this.selectedDevice = _.cloneDeep(device)
+    editTable(table) {
+      this.selectedTable = _.cloneDeep(table)
       this.$refs.bModal.show()
     },
-    editTables(device) {
-      this.$router.push({ name: 'tables', params: { idDevice: device.id } })
+    editTableFields(table) {
+      this.$router.push({ name: 'table-fields', params: { idTable: table.id, idDevice: this.device.id } })
     },
-    deleteDevice(device) {
+    deleteTable(table) {
       this.$swal({
         icon: 'warning',
-        title: `Deletar dispositivo ${device.name}?`,
+        title: `Deletar tabela ${table.name}?`,
         html: 'Você tem certeza?',
         showCancelButton: true,
         cancelButtonText: 'Cancelar',
@@ -180,7 +188,7 @@ export default {
         },
       }).then(result => {
         if (result.isConfirmed) {
-          this.$store.dispatch('devices/delete', device.id)
+          this.$store.dispatch('tables/delete', table.id)
         }
       })
     },

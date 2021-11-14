@@ -9,9 +9,22 @@
       label-for="text-input"
     >
       <b-form-input
+        v-if="!!cleaveOptions"
         :id="id"
         v-model="fieldValue"
         v-cleave="cleaveOptions"
+        :disabled="disabled"
+        class="b-form-input"
+        :state="getValidationState(validationContext)"
+        trim
+        :type="type"
+        :placeholder="placeholder"
+        @input="handleInput"
+      />
+      <b-form-input
+        v-else
+        :id="id"
+        v-model="fieldValue"
         :disabled="disabled"
         class="b-form-input"
         :state="getValidationState(validationContext)"
@@ -73,7 +86,7 @@ export default {
     cleaveOptions: {
       type: undefined,
       required: false,
-      default: null,
+      default: undefined,
     },
   },
   data() {

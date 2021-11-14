@@ -83,7 +83,8 @@ export default {
     },
     reduce: {
       type: Function,
-      required: true,
+      required: false,
+      default: value => value,
     },
     createOptions: {
       type: Function,
@@ -118,7 +119,8 @@ export default {
       default(option) {
         if (option && option.id) {
           return option.id
-        } if (option && option.value) {
+        }
+        if (option && option.value) {
           return option.value
         }
         return JSON.stringify(option)

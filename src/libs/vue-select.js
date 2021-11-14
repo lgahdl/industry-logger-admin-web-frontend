@@ -11,4 +11,4 @@ vSelect.props.components.default = () => ({
   },
 })
 
-Vue.component(vSelect)
+Vue.component('v-select', vSelect)
