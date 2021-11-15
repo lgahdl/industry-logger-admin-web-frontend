@@ -19,6 +19,16 @@
           :items="devices"
           :fields="columns"
         >
+          <template #cell(editTable)="{item}">
+            <div class="d-flex">
+              <feather-icon
+                class="icon-button mr-1"
+                icon="ClipboardIcon"
+                size="18"
+                @click="editTables(item)"
+              />
+            </div>
+          </template>
           <template #cell(createdAt)="{item}">
             {{ new Date(item.createdAt).toISOString().split("T")[0] }}
           </template>
@@ -32,12 +42,6 @@
                 icon="EditIcon"
                 size="18"
                 @click="editDevice(item)"
-              />
-              <feather-icon
-                class="icon-button mr-1"
-                icon="ClipboardIcon"
-                size="18"
-                @click="editTables(item)"
               />
               <feather-icon
                 class="icon-button"
@@ -119,7 +123,9 @@ export default {
     return {
       cleaveOptions,
       columns: [
-        { key: 'id', sortable: true, label: 'Id' },
+        {
+          key: 'editTable', sortable: true, label: 'Tabelas',
+        },
         {
           key: 'name', sortable: true, label: 'Nome',
         },

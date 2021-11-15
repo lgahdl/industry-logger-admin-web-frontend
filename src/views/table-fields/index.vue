@@ -157,7 +157,7 @@
                 style="width:100%;"
               >
                 <label>
-                  Dígito
+                  Bit
                 </label>
                 <b-form-spinbutton
                   v-model="digitNumber"
@@ -252,7 +252,6 @@ export default {
         { label: 'ALARM', value: 'ALARM' },
       ],
       columns: [
-        { key: 'id', sortable: true, label: 'Id' },
         {
           key: 'name', sortable: true, label: 'Nome',
         },
